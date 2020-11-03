@@ -3,37 +3,27 @@ from abc import ABC, abstractmethod
 from enums import Signal
 
 
-# interface, implemented by gate & temporal fissue
+# interface, implemented by gate & temporal fissure
 class Node(ABC):
 
-	# both lists contain only (other) Nodes
-	_before = []
-	_next = []
-
 	# init with empty _before- & _next relations
-	def __init__(self): pass
-
-
-	# _before & _next are Node-Lists (Node[])
-	def __init__(self, _before, _next):
-		self._before = _before
-		self._next = _next
+	def __init__(self, nodeType):
+		self._nodeType = nodeType
+		self._before = []
+		self._next = []
 
 
 	def getNext(self): return self._next
 
 
-	# need to override
 	# returns null if the signal didn't pass through
 	@abstractmethod
 	def processSignal(self, s: Signal):
 		pass
 
 
-	# need to override
-	@abstractmethod
 	def __str__(self):
-		pass
+		return "{" + self._nodeType.name + ", hash:" + self.__hash__().__str__() + "}"
 
 
 	# destroy this node after rewiring _before & after nodes to each other
@@ -43,12 +33,13 @@ class Node(ABC):
 
 
 	# needed if neighbors are destroyed
-	def removeFrom_beforeNodes(self, node):
-		# remove node (all duplicates if existing)
-		self._before.removeAll(node)
+	# IMPORTANT: automatic management of _before every time _next is changed!
+	def addToNext(self, node):
 
-		# apply in reverse, too
-		node.removeFromNext(self)
+		if node in self._next: return
+
+		self._next.append(node)
+		node._addToBefore(self)
 
 
 	def removeFromNext(self, node):
@@ -57,21 +48,19 @@ class Node(ABC):
 		self._next.removeAll(node)
 
 		# apply in reverse, too
-		node.removeFromBeforeNodes(self)
+		node._removeFromBefore(self)
 
 
-	def addToBeforeNodes(self, node):
+
+	# private starting here
+
+	def _addToBefore(self, node):
+
 		if node in self._before: return
 
-		self._before.add(node)
-		node.addToNext(self)
+		self._before.append(node)
 
 
-	def addToNext(self, node):
-		if node in self._next: return
-
-		self._next.add(node)
-		node.addToBeforeNodes(self)
-
-
-# TODO: automatic management of _before every time _next is changed
+	def _removeFromBefore(self, node):
+		# remove node (all duplicates if existing)
+		self._before.removeAll(node)

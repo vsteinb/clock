@@ -1,21 +1,11 @@
-import enums.NodeType
-import enums.Signal
+from enums import NodeType, Signal
+from interfaces.Node import Node
 
 
 class TemporalFissure(Node):
 
-	_nodeType = None
-
 	def __init__(self, nodeType):
-		super().__init__(self)
-		self._nodeType = nodeType
-
-	def __init__(self, nodeType, before,  next):
-		super().__init__(self, before, next)
-		self._nodeType = nodeType
-
-	def __str__(self):
-		return "TemporalFissure {" + self.nodeType + ", id:" + self.__hash__() + "}"
+		super().__init__(nodeType)
 
 
 	def addToNext(self, node):

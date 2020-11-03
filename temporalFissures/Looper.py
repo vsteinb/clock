@@ -1,17 +1,14 @@
-import interfaces.Node
-import interfaces.TemporalFissure
 from enums import NodeType, Signal
+from interfaces.TemporalFissure import TemporalFissure
 
 
 class Looper(TemporalFissure):
 
 	def __init__(self):
-		super().__init__(self, NodeType.TEMPORAL__LOOPER)
-
-	def __init__(self, before, next):
-		super().__init__(self, NodeType.TEMPORAL__LOOPER, before, next)
+		super().__init__(NodeType.TEMPORAL__LOOPER)
 
 
 	def processSignal(self, signal) -> Signal:
 		# TODO
+		print(self)
 		return signal

@@ -1,25 +1,16 @@
-package clock.gates;
+from enums import NodeType, Signal
 
-import java.util.Set;
+import interfaces.Gate
+import interfaces.Node
 
-import clock.enums.NodeType;
-import clock.enums.Signal;
+class Eradicate(Gate):
 
-import clock.interfaces.Gate;
-import clock.interfaces.Node;
+	def __init__(self):
+		super().__init__(self, NodeType.GATE__ERADICATE)
 
-public class Eradicate extends Gate {
+	def __init__(self, before, next):
+		super().__init__(self, NodeType.GATE__ERADICATE, before, next)
 
-	public Eradicate() {
-		super(NodeType.GATE__ERADICATE);
-	}
-	public Eradicate(Set<Node> before, Set<Node> after) {
-		super(NodeType.GATE__ERADICATE, before, after);
-	}
-
-	@Override
-	public Signal processSignal(Signal signal) {
-		// TODO
-		return signal;
-	}
-}
+	def processSignal(self, signal) -> Signal:
+		# TODO
+		return signal

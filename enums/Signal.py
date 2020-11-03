@@ -1,5 +1,6 @@
-package clock.enums;
+from enum import Enum, unique
 
-public enum Signal {
-	SB
-}
+
+@unique
+class Signal(Enum):
+	SB = 0

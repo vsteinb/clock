@@ -1,19 +1,12 @@
-package clock;
+from enums import LogLevel, Signal
+from Net import Net
 
-import clock.Net;
-import clock.enums.LogLevel;
-import clock.enums.Signal;
+if __name__ == "__main__":
 
-public class Main {
+		net = Net()
+		# net.logLevel = LogLevel.DEBUG
 
-	public static void main(String args[]) {
+		net.sendSignal(Signal.SB)
 
-		Net net = Net.getInstance();
-		net.logLevel = LogLevel.DEBUG;
-
-		net.sendSignal(Signal.SB);
-	}
-}
-
-// TODO: populate graph
-// TODO: use factory for nodes?
+# TODO: populate graph
+# TODO: use factory for nodes?

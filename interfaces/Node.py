@@ -1,71 +1,77 @@
-package clock.interfaces;
+from abc import ABC, abstractmethod
 
-import java.util.Set;
-import java.util.HashSet;
-
-import clock.enums.Signal;
+from enums import Signal
 
 
-// interface, implemented by gate & temporal fissue
-public abstract class Node {
+# interface, implemented by gate & temporal fissue
+class Node(ABC):
 
-	private Set<Node> before = new HashSet<>();
-	private Set<Node> next = new HashSet<>();
+	# both lists contain only (other) Nodes
+	_before = []
+	_next = []
 
-
-	protected Node() {}
-
-	protected Node(Set<Node> before, Set<Node> next) {
-		this.before = before;
-		this.next = next;
-	}
-
-	public Set<Node> getNext() {
-		return this.next;
-	}
+	# init with empty _before- & _next relations
+	def __init__(self): pass
 
 
-	// need to override
-	// returns null if the signal didn't pass trough
-	public abstract Signal processSignal(Signal s);
+	# _before & _next are Node-Lists (Node[])
+	def __init__(self, _before, _next):
+		self._before = _before
+		self._next = _next
 
-	// need to override
-	public abstract String toString();
 
-	// destroy this node after rewiring before & after nodes to each other
-	public void destroy() {
-		// TODO how rewire?
-	}
+	def getNext(self): return self._next
 
-	// needed if neighbors are destroyed
-	public void removeFromBeforeNodes(Node node) {
-		// remove node (all duplicates if existing)
-		while (this.before.remove(node));
 
-		// apply in reverse, too
-		node.removeFromNext(this);
-	}
-	public void removeFromNext(Node node) {
+	# need to override
+	# returns null if the signal didn't pass through
+	@abstractmethod
+	def processSignal(self, s: Signal):
+		pass
 
-		// remove node (all duplicates if existing)
-		while (this.next.remove(node));
 
-		// apply in reverse, too
-		node.removeFromBeforeNodes(this);
-	}
+	# need to override
+	@abstractmethod
+	def __str__(self):
+		pass
 
-	public void addToBeforeNodes(Node node) {
-		if (this.before.contains(node)) return;
 
-		this.before.add(node);
-		node.addToNext(this);
-	}
-	public void addToNext(Node node) {
-		if (this.next.contains(node)) return;
+	# destroy this node after rewiring _before & after nodes to each other
+	def destroy(self):
+		# TODO how rewire?
+		pass
 
-		this.next.add(node);
-		node.addToBeforeNodes(this);
-	}
-}
 
-// TODO: automatic management of before[] every time next[] is changed
+	# needed if neighbors are destroyed
+	def removeFrom_beforeNodes(self, node):
+		# remove node (all duplicates if existing)
+		self._before.removeAll(node)
+
+		# apply in reverse, too
+		node.removeFromNext(self)
+
+
+	def removeFromNext(self, node):
+
+		# remove node (all duplicates if existing)
+		self._next.removeAll(node)
+
+		# apply in reverse, too
+		node.removeFromBeforeNodes(self)
+
+
+	def addToBeforeNodes(self, node):
+		if node in self._before: return
+
+		self._before.add(node)
+		node.addToNext(self)
+
+
+	def addToNext(self, node):
+		if node in self._next: return
+
+		self._next.add(node)
+		node.addToBeforeNodes(self)
+
+
+# TODO: automatic management of _before every time _next is changed

@@ -1,7 +1,7 @@
-package clock.enums;
+from enum import Enum, unique
 
-// enum with gate & temporal fissue types
-public enum NodeType {
-	GATE__ERADICATE,
-	TEMPORAL__LOOPER,
-}
+# enum with gate & temporal fissure types
+@unique
+class NodeType(Enum):
+	GATE__ERADICATE = 0
+	TEMPORAL__LOOPER = 100

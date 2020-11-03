@@ -1,12 +1,23 @@
 from enums import LogLevel, Signal
+from gates.Eradicate import Eradicate
 from Net import Net
+from temporalFissures.Looper import Looper
+
 
 if __name__ == "__main__":
 
-		net = Net()
-		# net.logLevel = LogLevel.DEBUG
+	net = Net()
+	net.logLevel = LogLevel.DEBUG
 
-		net.sendSignal(Signal.SB)
+	nodes = [Eradicate(), Eradicate(), Looper()]
+	n1 = [nodes[1], Eradicate()]
+
+	net.addNodeBranch(nodes)
+	net.addNodeBranch(n1)
+
+	#pdb.set_trace()
+	net.sendSignal(Signal.SB)
+
 
 # TODO: populate graph
 # TODO: use factory for nodes?

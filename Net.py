@@ -1,83 +1,64 @@
-package clock;
+import enums.LogLevel
+from enums import Signal, LogLevel
 
-import java.util.HashSet;
-import java.util.Set;
-
-import clock.enums.LogLevel;
-import clock.enums.Signal;
-
-import clock.interfaces.Node;
+import interfaces.Node
 
 
-//Singleton
-public class Net {
 
-	// Getters & Setters superfluous
-	public Node startNode;		// access point to send signals to
-	public LogLevel logLevel;
+class Net:
 
+	# Singleton, cannot make constructor private, therefore nested class
+	class _Net:
 
-	private static Net instance = null;
+		# has no instance vars
+		def __init__(self): pass
 
-	private Net() {
-		this.startNode = null;
-	}
-	public static Net getInstance() {
-		if (Net.instance != null) Net.instance = new Net();
-		return Net.instance;
-	}
+	# typeof Net
+	_instance = None
+
+	def __init__(self):
+		if not Net._instance:
+			Net._instance = Net._Net()
 
 
-	// could be used by nodes?
-	public void print(Node node, String message) {	// Node is for debugging
-		System.out.println(this.logLevel == LogLevel.DEBUG ? node.toString() + message : message);
-	}
+	# recursive walk through graph
+	# breadth-first search
+	# in case of loop structures: stop if previously visited was hit
+	def sendSignal(self, signal: Signal):
+		if not self.startNode: return
 
-	// recursive walk through graph
-	// breadth-first search
-	// in case of loop structures: stop if previously visited was hit
-	public void sendSignal(Signal signal) {
-		if (this.startNode == null) return;
-
-		Set<Object[]> initialLayer = new HashSet<>();
-		Object[] entry = {signal, this.startNode};
-		initialLayer.add(entry);
-
-		this.sendSignal(initialLayer, new HashSet<>());
-	}
-	private void sendSignal(Set<Object[]> layer, Set<Node> history) {
-
-		Set<Object[]> nextLayer = new HashSet<>();
-		for (Object[] e : layer) {
-
-			Node toNode = (Node)e[1];
-			// detected loop, stop here
-			if (history.contains(toNode)) continue;
-
-			Signal signal = (Signal)e[0];
-			// gate processes signal
-			Signal processedSignal = toNode.processSignal(signal);
-			history.add(toNode);
-
-			// signal did not pass through, stop here
-			if (processedSignal == null) continue;
-
-			// add next nodes to new layer
-			for (Node n : toNode.getNext()) {
-				Object[] entry = {processedSignal, n};
-				nextLayer.add(entry);
-			}
-		}
-		// process underlying layers
-		this.sendSignal(nextLayer, history);
-	}
+		initialLayer = [(signal, self.startNode)]
+		self._sendSignal(initialLayer, [])
 
 
-	private void addGate() {		// randomGate, random location (set next[] on new and existing nodes)
-		// TODO
-	}
+	def _sendSignal(self, layer, history):
 
-	private void addTemporalFissue() {		// random fissue after random gate (not fissue, should not have nodes after)
-		// TODO
-	}
-}
+		nextLayer = []
+		for signal, toNode in layer:
+
+			# detected loop, stop here
+			if toNode in history: continue
+
+			# gate processes signal
+			processedSignal = toNode.processSignal(signal)
+			history.add(toNode)
+
+			# signal did not pass through, stop here
+			if processedSignal is None: continue
+
+			# add next nodes to new layer
+			for n in toNode.getNext():
+				nextLayer.add((processedSignal, n))
+
+		# process underlying layers
+		self._sendSignal(nextLayer, history)
+
+
+
+	def _addGate(self):		# randomGate, random location (set next[] on new and existing nodes)
+		# TODO
+		pass
+
+	def _addTemporalFissue(self):		# random fissue after random gate (not fissue, should not have nodes after)
+		# TODO
+		pass

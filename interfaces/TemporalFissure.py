@@ -1,35 +1,26 @@
-package clock.interfaces;
-
-import java.util.Set;
-
-import clock.enums.NodeType;
-import clock.enums.Signal;
+import enums.NodeType
+import enums.Signal
 
 
-public abstract class TemporalFissure extends Node {
+class TemporalFissure(Node):
 
-	private NodeType nodeType;
+	_nodeType = None
 
-public TemporalFissure(NodeType nodeType) {
-		super();
-		this.nodeType = nodeType;
-	}
-	public TemporalFissure(NodeType nodeType, Set<Node> before, Set<Node> next) {
-		super(before, next);
-		this.nodeType = nodeType;
-	}
+	def __init__(self, nodeType):
+		super().__init__(self)
+		self._nodeType = nodeType
 
-	@Override
-	public String toString() {
-		return "TemporalFissure {" + this.nodeType + ", id:" + this.hashCode() + "}";
-	}
+	def __init__(self, nodeType, before,  next):
+		super().__init__(self, before, next)
+		self._nodeType = nodeType
 
-	@Override
-	public void addToNext(Node node) {
-		throw new RuntimeException("Temporal Fissure can not have following nodes");
-	}
-	@Override
-	public void removeFromNext(Node node) {
-		throw new RuntimeException("Temporal Fissure can not have following nodes");
-	}
-}
+	def __str__(self):
+		return "TemporalFissure {" + self.nodeType + ", id:" + self.__hash__() + "}"
+
+
+	def addToNext(self, node):
+		raise NotImplementedError("Temporal Fissure can not have following nodes")
+
+
+	def removeFromNext(self, node):
+		raise NotImplementedError("Temporal Fissure can not have following nodes")

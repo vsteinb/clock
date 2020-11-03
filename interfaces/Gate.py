@@ -1,25 +1,18 @@
-package clock.interfaces;
-
-import java.util.Set;
-
-import clock.enums.NodeType;
+import enums.NodeType
 
 
-public abstract class Gate extends Node {
+class Gate(Node):
 
-	private NodeType nodeType;
+	# of type nodeType
+	_nodeType = None
 
-	public Gate(NodeType nodeType) {
-		super();
-		this.nodeType = nodeType;
-	}
-	public Gate(NodeType nodeType, Set<Node> before, Set<Node> next) {
-		super(before, next);
-		this.nodeType = nodeType;
-	}
+	def __init__(self, nodeType):
+		super().__init__(self)
+		self._nodeType = nodeType
 
-	@Override
-	public String toString() {
-		return "Gate {" + this.nodeType + ", id:" + this.hashCode() + "}";
-	}
-}
+	def __init__(self, nodeType, before, next):
+		super().__init__(self, before, next)
+		self._nodeType = nodeType
+
+	def __str__(self):
+		return "Gate {" + self.nodeType + ", id:" + self.__hash__() + "}"

@@ -1,26 +1,17 @@
-package clock.temporalfissures;
-
-import java.util.Set;
-
-import clock.enums.NodeType;
-import clock.enums.Signal;
-
-import clock.interfaces.Node;
-import clock.interfaces.TemporalFissure;
+import interfaces.Node
+import interfaces.TemporalFissure
+from enums import NodeType, Signal
 
 
-public class Looper extends TemporalFissure {
+class Looper(TemporalFissure):
 
-	public Looper() {
-		super(NodeType.TEMPORAL__LOOPER);
-	}
-	public Looper(Set<Node> before, Set<Node> next) {
-		super(NodeType.TEMPORAL__LOOPER, before, next);
-	}
+	def __init__(self):
+		super().__init__(self, NodeType.TEMPORAL__LOOPER)
 
-	@Override
-	public Signal processSignal(Signal signal) {
-		// TODO
-		return signal;
-	}
-}
+	def __init__(self, before, next):
+		super().__init__(self, NodeType.TEMPORAL__LOOPER, before, next)
+
+
+	def processSignal(self, signal) -> Signal:
+		# TODO
+		return signal

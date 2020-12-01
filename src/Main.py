@@ -15,7 +15,6 @@ if __name__ == "__main__":
 	net.addNodeBranch(nodes)
 	net.addNodeBranch(n1)
 
-	#pdb.set_trace()
 	net.sendSignal(Signal.SB)
 
 

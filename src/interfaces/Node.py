@@ -45,7 +45,9 @@ class Node(ABC):
 	def removeFromNext(self, node):
 
 		# remove node (all duplicates if existing)
-		self._next.removeAll(node)
+		indices = [index for index, value in enumerate(self._next) if value == node]
+		for index in indices:
+			del self._next[index]
 
 		# apply in reverse, too
 		node._removeFromBefore(self)
@@ -63,4 +65,6 @@ class Node(ABC):
 
 	def _removeFromBefore(self, node):
 		# remove node (all duplicates if existing)
-		self._before.removeAll(node)
+		indices = [index for index, value in enumerate(self._before) if value == node]
+		for index in indices:
+			del self._before[index]

@@ -68,3 +68,44 @@ class Net:
 			node.addToNext(nextNode)
 
 		if self.startNode is None: self.startNode = nodes[0]
+
+	# recursive walk through graph
+	# breadth-first search
+	# in case of loop structures: stop if previously visited was hit
+	def cleanTree(self):
+		if not self.startNode: return
+
+		return self._cleanTree([[self.startNode]], [])
+
+
+	def _cleanTree(self, layers, history):
+
+		nextLayer = []
+		currentLayer = layers[-1]
+		deleteFromCurrentLayer = []
+
+		for toNode in currentLayer:
+
+			# detected loop, stop here
+			if toNode in history:
+				deleteFromCurrentLayer.append(toNode)
+				continue
+
+			# gate processes signal
+			history.append(toNode)
+
+			# add next nodes to new layer
+			for n in toNode.getNext():
+				nextLayer.append(n)
+
+		# postprocess current layer
+		for n in deleteFromCurrentLayer:
+			del currentLayer[ currentLayer.index(n) ]
+
+		# process underlying layers recursively
+		if nextLayer:
+			layers.append(nextLayer)
+			return self._cleanTree(layers, history)
+
+		# deepest layer found, return from recursion
+		return layers[:-1]

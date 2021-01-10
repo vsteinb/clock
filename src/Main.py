@@ -16,19 +16,19 @@ if __name__ == "__main__":
 
 	e33 = Eradicate()
 
-	# branches = [
-	# [e0, e1, 					e2,						L0],
-	# 		[e1,   				Eradicate()],
-	# [e0, Eradicate(), 							L0],
-	# [e0, 							e2,    				Eradicate(), e33, Eradicate()],
-	# 								 [e2,    				Eradicate()],
-	#   																					[e33, Eradicate()],
-	# ]
 	branches = [
-		[e0, e1],
-		[e1, Eradicate()],
-		[e1, Eradicate(), Eradicate()],
+	[e0, e1, 					e2,						L0],
+			[e1,   				Eradicate()],
+	[e0, Eradicate(), 							L0],
+	[e0, 							e2,    				Eradicate(), e33, Eradicate()],
+									 [e2,    				Eradicate()],
+	  																					[e33, Eradicate()],
 	]
+	# branches = [
+	# 	[e0, e1],
+	# 	[e1, Eradicate()],
+	# 	[e1, Eradicate(), Eradicate()],
+	# ]
 
 
 	for b in branches: net.addNodeBranch(b)
